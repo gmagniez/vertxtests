@@ -9,7 +9,7 @@ public class MySenderVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         HttpClient client = vertx.createHttpClient(new HttpClientOptions().setDefaultHost("localhost").setDefaultPort(
-                HTTPServerReproducer.PORT));
+                HTTPServerReproducer.PORT).setKeepAlive(false));
 
         vertx.setPeriodic(1000, l -> {
             client.get("/").handler(response -> {

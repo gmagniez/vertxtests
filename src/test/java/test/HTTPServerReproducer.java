@@ -2,6 +2,7 @@ package test;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 
 public class HTTPServerReproducer {
 
@@ -11,12 +12,16 @@ public class HTTPServerReproducer {
 
     public static final int CLIENT_INSTANCES = 1;
 
+    public static final int EVENT_LOOPS_SIZE = VertxOptions.DEFAULT_EVENT_LOOP_POOL_SIZE;
+
     public static void main(String[] args) {
         DeploymentOptions options = new DeploymentOptions()
                 .setInstances(SERVER_INSTANCES);
         DeploymentOptions options2 = new DeploymentOptions().setInstances(CLIENT_INSTANCES);
 
-        Vertx vertx = Vertx.vertx();
+        VertxOptions vertxOptions  = new VertxOptions().setEventLoopPoolSize(EVENT_LOOPS_SIZE);
+
+        Vertx vertx = Vertx.vertx(vertxOptions);
 
         vertx.deployVerticle(MyReceiverVerticle.class.getCanonicalName(), options, ar -> {
 
